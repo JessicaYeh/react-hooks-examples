@@ -6,7 +6,6 @@ import Example03 from '../examples/useStateObjectGotcha';
 import Example04 from '../examples/useEffectDebounce';
 import Example05 from '../examples/useDebounceCustomHook';
 import Example06 from '../examples/useEffectDependenciesGotcha';
-import Example07 from '../examples/useCallback';
 
 export default {
   title: 'Examples',
@@ -38,4 +37,3 @@ export const Ex06 = () => {
     </>
   );
 };
-export const Ex07 = () => <Example07 />;

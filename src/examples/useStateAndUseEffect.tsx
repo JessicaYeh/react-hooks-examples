@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextField, Switch, FormControlLabel, Badge } from '@material-ui/core';
 import PetsIcon from '@material-ui/icons/Pets';
-import useStyles from './useStyles';
+import useStyles from './util/useStyles';
 
 const Example: React.FC = () => {
   const classes = useStyles();

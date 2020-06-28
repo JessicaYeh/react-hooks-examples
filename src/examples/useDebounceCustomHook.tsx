@@ -1,7 +1,8 @@
 import React from 'react';
 import { TextField, Switch, FormControlLabel, Badge } from '@material-ui/core';
 import PetsIcon from '@material-ui/icons/Pets';
-import useStyles from './useStyles';
+import useStyles from './util/useStyles';
+import { getUrl } from './util/getUrl';
 
 function useDebounce<T>(value: T, delay: number = 500) {
   const [debouncedValue, setDebouncedValue] = React.useState(value);
@@ -20,20 +21,6 @@ function useDebounce<T>(value: T, delay: number = 500) {
 
   return debouncedValue;
 }
-
-interface Options {
-  text: string;
-  monochrome: boolean;
-  width?: number;
-  height?: number;
-}
-
-const getUrl = (options: Options) => {
-  const { text, monochrome, width = 600, height = 400 } = options;
-  return `https://cataas.com/cat${
-    text ? `/says/${text}` : ''
-  }?width=${width}&height=${height}${monochrome ? '&filter=mono' : ''}`;
-};
 
 const Example: React.FC = () => {
   const classes = useStyles();

@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextField, Switch, FormControlLabel } from '@material-ui/core';
-import useStyles from './useStyles';
+import useStyles from './util/useStyles';
 
 const Example: React.FC = () => {
   const classes = useStyles();

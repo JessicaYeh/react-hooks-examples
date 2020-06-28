@@ -1,21 +1,8 @@
 import React from 'react';
 import { TextField, Switch, FormControlLabel, Badge } from '@material-ui/core';
 import PetsIcon from '@material-ui/icons/Pets';
-import useStyles from './useStyles';
-
-interface Options {
-  text: string;
-  monochrome: boolean;
-  width?: number;
-  height?: number;
-}
-
-const getUrl = (options: Options) => {
-  const { text, monochrome, width = 600, height = 400 } = options;
-  return `https://cataas.com/cat${
-    text ? `/says/${text}` : ''
-  }?width=${width}&height=${height}${monochrome ? '&filter=mono' : ''}`;
-};
+import useStyles from './util/useStyles';
+import { getUrl } from './util/getUrl';
 
 const Example: React.FC = () => {
   const classes = useStyles();

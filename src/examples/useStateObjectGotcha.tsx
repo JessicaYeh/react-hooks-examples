@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextField, Switch, FormControlLabel, Badge } from '@material-ui/core';
 import PetsIcon from '@material-ui/icons/Pets';
-import useStyles from './useStyles';
+import useStyles from './util/useStyles';
 
 interface State {
   text: string;
@@ -11,12 +11,12 @@ interface State {
 interface Options {
   text: string;
   monochrome: boolean;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 }
 
 const getUrl = (options: Options) => {
-  const { text, monochrome, width, height } = options;
+  const { text, monochrome, width = 600, height = 400 } = options;
   return `https://cataas.com/cat${
     text ? `/says/${text}` : ''
   }?width=${width}&height=${height}${monochrome ? '&filter=mono' : ''}`;
@@ -42,8 +42,8 @@ const Example: React.FC<Props> = ({ onOptionsChange }) => {
   //     // text and monochrome and then just use [state] for dependency array
   //     text,
   //     monochrome,
-  //     width: 600,
-  //     height: 400,
+  //     width: 400,
+  //     height: 300,
   //   };
 
   const options: Options = React.useMemo(
@@ -52,8 +52,8 @@ const Example: React.FC<Props> = ({ onOptionsChange }) => {
       // text and monochrome and then just use [state] for dependency array
       text,
       monochrome,
-      width: 600,
-      height: 400,
+      width: 400,
+      height: 300,
     }),
     [text, monochrome]
   );
