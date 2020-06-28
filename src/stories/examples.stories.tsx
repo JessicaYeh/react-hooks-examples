@@ -7,6 +7,7 @@ import Example04 from '../examples/useEffectDebounce';
 import Example05 from '../examples/useDebounceCustomHook';
 import Example06 from '../examples/useEffectDependenciesGotcha';
 import Example07 from '../examples/useRef';
+import Example08 from '../examples/forwardRef';
 
 export default {
   title: 'Examples',
@@ -45,3 +46,4 @@ export const Ex06 = () => {
 };
 
 export const Ex07 = () => <Example07 />;
+export const Ex08 = () => <Example08 />;
