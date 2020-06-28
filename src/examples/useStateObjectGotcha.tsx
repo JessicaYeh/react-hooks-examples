@@ -35,21 +35,23 @@ const Example: React.FC<Props> = ({ onOptionsChange }) => {
   });
   const { text, monochrome } = state;
 
-  // Bad; causes the useEffect with [options] dependency to be called on
-  // every re-render because a new options object is created every render
-  //   const options: Options = {
-  //     // can also just spread ...state into here instead of adding
-  //     // text and monochrome and then just use [state] for dependency array
-  //     text,
-  //     monochrome,
-  //     width: 400,
-  //     height: 300,
-  //   };
+  /**
+   * Bad; causes the useEffect with [options] dependency to be called on
+   * every re-render because a new options object is created every render
+   */
+  // const options: Options = {
+  //   text,
+  //   monochrome,
+  //   width: 400,
+  //   height: 300,
+  // };
 
   const options: Options = React.useMemo(
     () => ({
-      // can also just spread ...state into here instead of adding
-      // text and monochrome and then just use [state] for dependency array
+      /**
+       * can also just spread ...state into here instead of adding
+       * text and monochrome and then just use [state] for useMemo dependency array
+       */
       text,
       monochrome,
       width: 400,
@@ -77,9 +79,11 @@ const Example: React.FC<Props> = ({ onOptionsChange }) => {
           variant="outlined"
           value={text}
           onChange={(event) => {
-            // //  No warning about immutability!
+            /**
+             * Bad; Doesn't work, because to React the state is still the same object (uses Object.is),
+             * so there will not be a re-render with the new state
+             */
             // state.text = event.target.value;
-            // // Doesn't work, because it's the same object
             // setState(state);
 
             setState({ ...state, text: event.target.value });

@@ -14,7 +14,22 @@ const Example: React.FC = () => {
     text ? `/says/${text}` : ''
   }?width=600&height=400${monochrome ? '&filter=mono' : ''}`;
 
-  // // Bad, infinite loop
+  /**
+   * Bad; `setCount` will change `count` and since `count` is a useEffect dependency, when
+   * `count` changes the useEffect will re-run and update `count` again, resulting in an
+   * infinite loop, and `count` will quickly increase infinitely. You could "fix" it
+   * by removing count as a dependency and disabling the eslint warning. However, if you
+   * wanted to change this so that `setCount` occurs after a delay:
+   *
+   *   setTimeout(() => setCount(count + 1), 1000);
+   *
+   * You can see that the counter fails to count all the url changes when you type quickly.
+   * This is because the function inside setTimeout is a closure that captures the `count`
+   * variable, and the variable becomes stale. To fix this, use the argument provided in the
+   * setCount function, which is always up to date:
+   *
+   *   setTimeout(() => setCount((prevCount) => prevCount + 1), 1000);
+   */
   // React.useEffect(() => {
   //   setCount(count + 1);
   // }, [url, count]);

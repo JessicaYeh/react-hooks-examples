@@ -1,47 +1,43 @@
 import React from 'react';
-import { TextField, Switch, FormControlLabel, Badge } from '@material-ui/core';
-import PetsIcon from '@material-ui/icons/Pets';
+import { TextField, Switch, FormControlLabel } from '@material-ui/core';
 import useStyles from './util/useStyles';
 import { getUrl } from './util/getUrl';
 import { useDebounce } from './util/useDebounce';
 
-interface Props {
-  onUrlChange?: (url: string) => void;
-}
-
-const Example: React.FC<Props> = ({ onUrlChange }) => {
+const Example: React.FC = () => {
   const classes = useStyles();
 
   const [text, setText] = React.useState('');
   const [monochrome, setMonochrome] = React.useState(false);
-  const [count, setCount] = React.useState(0);
 
   const url = getUrl({ text, monochrome });
 
   const debouncedUrl = useDebounce(url);
 
-  React.useEffect(() => {
-    setCount((prevCount) => prevCount + 1);
-  }, [debouncedUrl]);
+  /**
+   * Bad; the ref is re-created every render. The useEffect with the .focus() will complain
+   * that textFieldRef is missing from the dependency array, and if you add it in, the
+   * TextField will now be focused on every re-render. In functional components, always use
+   * useRef instead of createRef
+   */
+  // const textFieldRef = React.createRef<HTMLInputElement>();
 
-  React.useEffect(() => {
-    onUrlChange?.(debouncedUrl);
-  }, [debouncedUrl, onUrlChange]);
+  const textFieldRef = React.useRef<HTMLInputElement>();
 
   /**
-   * Bad; If these are grouped together, if the onUrlChange function changes
-   * (could happen on every re-render of the parent if it's not memoized in the parent)
-   * then setCount will be called more times than expected
+   * Autofocus the text field when the component mounts. Note: the TextField component
+   * has a built-in `autoFocus` prop and you should use that instead of doing this,
+   * but this is an example of how something like that is implemented, to demonstrate useRef
    */
-  // React.useEffect(() => {
-  //   setCount((prevCount) => prevCount + 1);
-  //   onUrlChange?.(debouncedUrl);
-  // }, [debouncedUrl, onUrlChange]);
+  React.useEffect(() => {
+    textFieldRef.current?.focus();
+  }, []);
 
   return (
     <>
       <div className={classes.form}>
         <TextField
+          inputRef={textFieldRef}
           label="Text"
           variant="outlined"
           value={text}
@@ -56,9 +52,6 @@ const Example: React.FC<Props> = ({ onUrlChange }) => {
             />
           }
         />
-        <Badge badgeContent={count} max={999} color="primary">
-          <PetsIcon />
-        </Badge>
       </div>
       <img src={debouncedUrl} alt="Cat" />
     </>

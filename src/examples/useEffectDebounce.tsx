@@ -21,8 +21,10 @@ const Example: React.FC = () => {
       setDebouncedUrl(url);
     }, debounceDelay);
 
-    // Cleanup function that is called whenever useEffect re-called when value changes.
-    // Stop debounced value from changing if value changed within delay.
+    /**
+     * Cleanup function that is called whenever useEffect re-called when value changes.
+     * Stop debounced value from changing if value changed within delay.
+     */
     return () => {
       clearTimeout(handler);
     };
