@@ -4,14 +4,30 @@ import useStyles from './util/useStyles';
 import { getUrl } from './util/getUrl';
 import { useDebounce } from './util/useDebounce';
 
+interface CatTextField {
+  meow: () => string;
+}
+
 const CatTextField = React.forwardRef<
-  HTMLInputElement,
+  CatTextField,
   React.InputHTMLAttributes<HTMLInputElement>
 >((props, ref) => {
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useImperativeHandle(ref, () => ({
+    meow: () => {
+      const value = inputRef.current?.value;
+      if (!value) {
+        return '';
+      }
+      return `MEOW! ${value}`;
+    },
+  }));
+
   return (
     <label>
       Text:
-      <input ref={ref} placeholder="Meow" {...props} />
+      <input ref={inputRef} placeholder="Meow" {...props} />
     </label>
   );
 });
@@ -26,15 +42,14 @@ const Example: React.FC = () => {
 
   const debouncedUrl = useDebounce(url);
 
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = React.useRef<CatTextField>(null);
 
   return (
     <>
       <div className={classes.form}>
         <CatTextField
           ref={inputRef}
-          // This is now an uncontrolled component
-          onKeyUp={() => setText(inputRef.current?.value ?? '')}
+          onKeyUp={() => setText(inputRef.current?.meow() ?? '')}
         />
         <FormControlLabel
           label="Monochrome"

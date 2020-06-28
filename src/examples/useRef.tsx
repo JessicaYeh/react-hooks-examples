@@ -16,13 +16,13 @@ const Example: React.FC = () => {
 
   /**
    * Bad; the ref is re-created every render. The useEffect with the .focus() will complain
-   * that textFieldRef is missing from the dependency array, and if you add it in, the
+   * that inputRef is missing from the dependency array, and if you add it in, the
    * TextField will now be focused on every re-render. In functional components, always use
    * useRef instead of createRef
    */
-  // const textFieldRef = React.createRef<HTMLInputElement>();
+  // const inputRef = React.createRef<HTMLInputElement>();
 
-  const textFieldRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   /**
    * Autofocus the text field when the component mounts. Note: the TextField component
@@ -30,14 +30,14 @@ const Example: React.FC = () => {
    * but this is an example of how something like that is implemented, to demonstrate useRef
    */
   React.useEffect(() => {
-    textFieldRef.current?.focus();
+    inputRef.current?.focus();
   }, []);
 
   return (
     <>
       <div className={classes.form}>
         <TextField
-          inputRef={textFieldRef}
+          inputRef={inputRef}
           label="Text"
           variant="outlined"
           value={text}
