@@ -4,32 +4,33 @@ import Example01 from '../examples/useState';
 import Example02 from '../examples/useStateAndUseEffect';
 import Example03 from '../examples/useStateObjectGotcha';
 import Example04 from '../examples/useEffectDebounce';
-import Example05 from '../examples/useEffectDebounceLifecycle';
+import Example05 from '../examples/hooksLifecycle';
 import Example06 from '../examples/useDebounceCustomHook';
 import Example07 from '../examples/useEffectDependenciesGotcha';
 import Example08 from '../examples/useRef';
 import Example09 from '../examples/forwardRef';
 import Example10 from '../examples/useImperativeHandle';
+import Example11, { ThemeProvider, Theme } from '../examples/useContext';
 
 export default {
   title: 'Examples',
 };
 
-export const Ex01 = () => <Example01 />;
+export const Ex01UseState = () => <Example01 />;
 
-export const Ex02 = () => <Example02 />;
+export const Ex02UseStateAndUseEffect = () => <Example02 />;
 
-export const Ex03 = () => (
+export const Ex03UseStateObjectGotcha = () => (
   <Example03 onOptionsChange={(options) => console.log(options)} />
 );
 
-export const Ex04 = () => <Example04 />;
+export const Ex04UseEffectDebounce = () => <Example04 />;
 
-export const Ex05 = () => <Example05 />;
+export const Ex05HooksLifecycle = () => <Example05 />;
 
-export const Ex06 = () => <Example06 />;
+export const Ex06UseDebounceCustomHook = () => <Example06 />;
 
-export const Ex07 = () => {
+export const Ex07UseEffectsDependenciesGotcha = () => {
   const [url, setUrl] = React.useState<string>();
 
   const handleUrlChange = (url: string) => {
@@ -49,6 +50,20 @@ export const Ex07 = () => {
   );
 };
 
-export const Ex08 = () => <Example08 />;
-export const Ex09 = () => <Example09 />;
-export const Ex10 = () => <Example10 />;
+export const Ex08UseRef = () => <Example08 />;
+
+export const Ex09ForwardRef = () => <Example09 />;
+
+export const Ex10UseImperativeHandle = () => <Example10 />;
+
+const customTheme: Theme = {
+  primary: '#ff9800',
+  spacing: {
+    small: 12,
+  },
+};
+export const Ex11UseContext = () => (
+  <ThemeProvider value={customTheme}>
+    <Example11 />
+  </ThemeProvider>
+);
