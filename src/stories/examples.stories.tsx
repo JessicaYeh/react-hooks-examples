@@ -4,11 +4,12 @@ import Example01 from '../examples/useState';
 import Example02 from '../examples/useStateAndUseEffect';
 import Example03 from '../examples/useStateObjectGotcha';
 import Example04 from '../examples/useEffectDebounce';
-import Example05 from '../examples/useDebounceCustomHook';
-import Example06 from '../examples/useEffectDependenciesGotcha';
-import Example07 from '../examples/useRef';
-import Example08 from '../examples/forwardRef';
-import Example09 from '../examples/useImperativeHandle';
+import Example05 from '../examples/useEffectDebounceLifecycle';
+import Example06 from '../examples/useDebounceCustomHook';
+import Example07 from '../examples/useEffectDependenciesGotcha';
+import Example08 from '../examples/useRef';
+import Example09 from '../examples/forwardRef';
+import Example10 from '../examples/useImperativeHandle';
 
 export default {
   title: 'Examples',
@@ -26,7 +27,9 @@ export const Ex04 = () => <Example04 />;
 
 export const Ex05 = () => <Example05 />;
 
-export const Ex06 = () => {
+export const Ex06 = () => <Example06 />;
+
+export const Ex07 = () => {
   const [url, setUrl] = React.useState<string>();
 
   const handleUrlChange = (url: string) => {
@@ -39,13 +42,13 @@ export const Ex06 = () => {
 
   return (
     <>
-      {/* <Example06 onUrlChange={setUrl} /> */}
-      <Example06 onUrlChange={handleUrlChange} />
+      {/* <Example07 onUrlChange={setUrl} /> */}
+      <Example07 onUrlChange={handleUrlChange} />
       <p>{url}</p>
     </>
   );
 };
 
-export const Ex07 = () => <Example07 />;
 export const Ex08 = () => <Example08 />;
 export const Ex09 = () => <Example09 />;
+export const Ex10 = () => <Example10 />;
