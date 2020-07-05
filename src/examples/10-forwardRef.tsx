@@ -16,6 +16,15 @@ const CatTextField = React.forwardRef<
   );
 });
 
+/**
+ * Example 10 - forwardRef
+ *
+ * We make a custom CatTextField component and use forwardRef to pass the ref
+ * prop through to the input element inside of CatTextField, so that we can still
+ * grab the ref from the parent. Regular components won't automatically have ref
+ * available in the props, so we have to explicitly add forwardRef to get access to it.
+ */
+
 const Example: React.FC = () => {
   const classes = useStyles();
 
@@ -27,14 +36,17 @@ const Example: React.FC = () => {
   const debouncedUrl = useDebounce(url);
 
   const inputRef = React.useRef<HTMLInputElement>(null);
+  React.useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   return (
     <>
       <div className={classes.form}>
         <CatTextField
           ref={inputRef}
-          // This is now an uncontrolled component
-          onKeyUp={() => setText(inputRef.current?.value ?? '')}
+          value={text}
+          onChange={(event) => setText(event.target.value)}
         />
         <FormControlLabel
           label="Monochrome"

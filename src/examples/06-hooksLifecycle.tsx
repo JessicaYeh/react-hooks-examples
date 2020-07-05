@@ -4,6 +4,15 @@ import PetsIcon from '@material-ui/icons/Pets';
 import useStyles from './util/useStyles';
 import { getUrl } from './util/getUrl';
 
+/**
+ * Example 06 - hooks lifecycle
+ *
+ * Using the previous example, console.log statements are added to illustrate
+ * the lifecycle ordering of hooks.
+ *
+ * render -> React updates DOM and refs -> useEffect cleanup -> useEffect
+ */
+
 const Example: React.FC = () => {
   const classes = useStyles();
 
@@ -13,11 +22,13 @@ const Example: React.FC = () => {
 
   const url = getUrl({ text, monochrome });
 
-  const debounceDelay = 500;
+  const debounceDelay = 5000;
   const [debouncedUrl, setDebouncedUrl] = React.useState(url);
 
   React.useEffect(() => {
+    console.log(`useEffect with [url]`);
     const handler = setTimeout(() => {
+      console.log(`setDebouncedUrl ${url}`);
       setDebouncedUrl(url);
     }, debounceDelay);
 
@@ -26,13 +37,22 @@ const Example: React.FC = () => {
      * Stop debounced value from changing if value changed within delay.
      */
     return () => {
+      console.log(`cleanup useEffect with [url]`);
       clearTimeout(handler);
     };
   }, [url]);
 
   React.useEffect(() => {
+    console.log(`useEffect with [debouncedUrl]`);
     setCount((prevCount) => prevCount + 1);
   }, [debouncedUrl]);
+
+  console.log(
+    `render
+    ${text} = text | ${monochrome} = monochrome | ${count} = count
+    ${url} = url
+    ${debouncedUrl} = debouncedUrl`
+  );
 
   return (
     <>

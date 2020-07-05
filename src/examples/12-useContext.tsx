@@ -51,6 +51,18 @@ const CatTextField = React.forwardRef<
   );
 });
 
+/**
+ * Example 12 - useContext
+ *
+ * We want to make a custom theme and use it in the CatTextField component.
+ * To achieve this, we define a Theme TS interface, use createContext to set up
+ * a ThemeContext with an initial default theme. Then we create a custom useTheme hook
+ * that returns the useContext hook for ThemeContext, and use this hook in CatTextField
+ * to style the component. Finally, ThemeProvider is exported, which can be
+ * used in the root of the application (in this case, in the stories file) to
+ * provide a custom theme.
+ */
+
 const Example: React.FC = () => {
   const classes = useStyles();
 

@@ -4,25 +4,16 @@ import PetsIcon from '@material-ui/icons/Pets';
 import useStyles from './util/useStyles';
 import { getUrl } from './util/getUrl';
 
-function useDebounce<T>(value: T, delay: number = 500) {
-  const [debouncedValue, setDebouncedValue] = React.useState(value);
-
-  React.useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
-
-    /**
-     * Cleanup function that is called whenever useEffect re-called when value changes.
-     * Stop debounced value from changing if value changed within delay.
-     */
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [value, delay]);
-
-  return debouncedValue;
-}
+/**
+ * Example 05 - debounce the url changes with useEffect
+ *
+ * We want to reduce the number of calls to the cat image service, by
+ * only updating the image after the user stops typing for 500ms, instead of
+ * immediately after each letter. The `url` will be debounced with a setTimeout
+ * inside of a useEffect, and the useEffect will have a cleanup function that
+ * cancels the timeout if the `url` was updated again within the 500ms. The
+ * debounced value will be stored in `debouncedUrl`.
+ */
 
 const Example: React.FC = () => {
   const classes = useStyles();
@@ -33,7 +24,22 @@ const Example: React.FC = () => {
 
   const url = getUrl({ text, monochrome });
 
-  const debouncedUrl = useDebounce(url);
+  const debounceDelay = 500;
+  const [debouncedUrl, setDebouncedUrl] = React.useState(url);
+
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedUrl(url);
+    }, debounceDelay);
+
+    /**
+     * Cleanup function that is called whenever useEffect re-called when value changes.
+     * Stop debounced value from changing if value changed within delay.
+     */
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [url]);
 
   React.useEffect(() => {
     setCount((prevCount) => prevCount + 1);

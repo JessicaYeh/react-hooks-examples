@@ -2,7 +2,18 @@ import React from 'react';
 import { TextField, Switch, FormControlLabel } from '@material-ui/core';
 import useStyles from './util/useStyles';
 
+/**
+ * Example 01 - useState
+ *
+ * Loads a cat image from the Cat as a Service (Cataas) API, given an
+ * optional text value to show on the image and a monochrome toggle.
+ *
+ * Has a controlled TextField and Switch that update a `text` and `monochrome`
+ * state values, which are used in building a URL pointing to a cat image.
+ */
+
 const Example: React.FC = () => {
+  // A hook provided by MaterialUI library for using styles
   const classes = useStyles();
 
   const [text, setText] = React.useState('');

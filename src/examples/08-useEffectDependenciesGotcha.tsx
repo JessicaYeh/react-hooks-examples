@@ -9,6 +9,25 @@ interface Props {
   onUrlChange?: (url: string) => void;
 }
 
+/**
+ * Example 08 - gotchas of useEffect dependencies
+ *
+ * An `onUrlChange(url)` callback function is added to the props.
+ * We want this function to be called whenever the debouncedUrl changes.
+ *
+ * We first attempt to add the onUrlChange call to the useEffect function where
+ * we call setCount, and follow the eslint rule to add onUrlChange to the dependency array,
+ * but notice it causes a problem where the counter is incremented twice for
+ * each url change.
+ *
+ * There are multiple ways to fix the problem, some cleaner than others. In
+ * increasing order of cleaniness:
+ *
+ * 1. Remove onUrlChange from the dependency array and then ignore the eslint warning
+ * 2. In the parent where onUrlChange function defined, wrap it in useCallback so it doesn't
+ *      change on every re-render of the parent
+ * 3. Refactor the useEffect into two separate useEffect
+ */
 const Example: React.FC<Props> = ({ onUrlChange }) => {
   const classes = useStyles();
 
@@ -20,14 +39,6 @@ const Example: React.FC<Props> = ({ onUrlChange }) => {
 
   const debouncedUrl = useDebounce(url);
 
-  React.useEffect(() => {
-    setCount((prevCount) => prevCount + 1);
-  }, [debouncedUrl]);
-
-  React.useEffect(() => {
-    onUrlChange?.(debouncedUrl);
-  }, [debouncedUrl, onUrlChange]);
-
   /**
    * Bad; If these are grouped together, if the onUrlChange function changes
    * (could happen on every re-render of the parent if it's not memoized in the parent)
@@ -37,6 +48,14 @@ const Example: React.FC<Props> = ({ onUrlChange }) => {
   //   setCount((prevCount) => prevCount + 1);
   //   onUrlChange?.(debouncedUrl);
   // }, [debouncedUrl, onUrlChange]);
+
+  React.useEffect(() => {
+    setCount((prevCount) => prevCount + 1);
+  }, [debouncedUrl]);
+
+  React.useEffect(() => {
+    onUrlChange?.(debouncedUrl);
+  }, [debouncedUrl, onUrlChange]);
 
   return (
     <>

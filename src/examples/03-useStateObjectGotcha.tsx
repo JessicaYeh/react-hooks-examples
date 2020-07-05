@@ -8,25 +8,15 @@ interface State {
   monochrome: boolean;
 }
 
-interface Options {
-  text: string;
-  monochrome: boolean;
-  width?: number;
-  height?: number;
-}
+/**
+ * Example 03 - gotchas of useState with object value
+ *
+ * The `text` and `monochrome` are combined into a single object in the state,
+ * to illustrate some things that can go wrong. If you need to manage state objects,
+ * look into using useReducer, which is better suited than useState for objects.
+ */
 
-const getUrl = (options: Options) => {
-  const { text, monochrome, width = 600, height = 400 } = options;
-  return `https://cataas.com/cat${
-    text ? `/says/${text}` : ''
-  }?width=${width}&height=${height}${monochrome ? '&filter=mono' : ''}`;
-};
-
-interface Props {
-  onOptionsChange?: (options: Options) => void;
-}
-
-const Example: React.FC<Props> = ({ onOptionsChange }) => {
+const Example: React.FC = () => {
   const classes = useStyles();
 
   const [state, setState] = React.useState<State>({
@@ -35,36 +25,9 @@ const Example: React.FC<Props> = ({ onOptionsChange }) => {
   });
   const { text, monochrome } = state;
 
-  /**
-   * Bad; causes the useEffect with [options] dependency to be called on
-   * every re-render because a new options object is created every render
-   */
-  // const options: Options = {
-  //   text,
-  //   monochrome,
-  //   width: 400,
-  //   height: 300,
-  // };
-
-  const options: Options = React.useMemo(
-    () => ({
-      /**
-       * can also just spread ...state into here instead of adding
-       * text and monochrome and then just use [state] for useMemo dependency array
-       */
-      text,
-      monochrome,
-      width: 400,
-      height: 300,
-    }),
-    [text, monochrome]
-  );
-
-  React.useEffect(() => {
-    onOptionsChange?.(options);
-  }, [options, onOptionsChange]);
-
-  const url = getUrl(options);
+  const url = `https://cataas.com/cat${
+    text ? `/says/${text}` : ''
+  }?width=600&height=400${monochrome ? '&filter=mono' : ''}`;
 
   const [count, setCount] = React.useState(0);
   React.useEffect(() => {
@@ -85,6 +48,14 @@ const Example: React.FC<Props> = ({ onOptionsChange }) => {
              */
             // state.text = event.target.value;
             // setState(state);
+
+            /**
+             * Bad; This won't work because setState needs an entire state object passed to it,
+             * it won't be able to automatically merge properties into the state value, like
+             * what the this.setState function does in a React class component.
+             * TypeScript will show an error here, but plain JS won't.
+             */
+            // setState({ text: event.target.value });
 
             setState({ ...state, text: event.target.value });
           }}

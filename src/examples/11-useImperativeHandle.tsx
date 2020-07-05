@@ -32,6 +32,14 @@ const CatTextField = React.forwardRef<
   );
 });
 
+/**
+ * Example 11 - useImperativeHandle
+ *
+ * We want a custom ref function meow() on the CatTextField that returns the
+ * current value on the input element with a "MEOW!" prepended. This can be
+ * achieved with useImperativeHandle in the CatTextField component.
+ */
+
 const Example: React.FC = () => {
   const classes = useStyles();
 

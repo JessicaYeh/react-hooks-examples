@@ -4,6 +4,33 @@ import PetsIcon from '@material-ui/icons/Pets';
 import useStyles from './util/useStyles';
 import { getUrl } from './util/getUrl';
 
+function useDebounce<T>(value: T, delay: number = 500) {
+  const [debouncedValue, setDebouncedValue] = React.useState(value);
+
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    /**
+     * Cleanup function that is called whenever useEffect re-called when value changes.
+     * Stop debounced value from changing if value changed within delay.
+     */
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
+/**
+ * Example 07 - useDebounce custom hook
+ *
+ * We extract the debounce logic into a custom hook that can be
+ * used with any state value.
+ */
+
 const Example: React.FC = () => {
   const classes = useStyles();
 
@@ -13,37 +40,11 @@ const Example: React.FC = () => {
 
   const url = getUrl({ text, monochrome });
 
-  const debounceDelay = 5000;
-  const [debouncedUrl, setDebouncedUrl] = React.useState(url);
+  const debouncedUrl = useDebounce(url);
 
   React.useEffect(() => {
-    console.log(`useEffect with [url]`);
-    const handler = setTimeout(() => {
-      console.log(`setDebouncedUrl ${url}`);
-      setDebouncedUrl(url);
-    }, debounceDelay);
-
-    /**
-     * Cleanup function that is called whenever useEffect re-called when value changes.
-     * Stop debounced value from changing if value changed within delay.
-     */
-    return () => {
-      console.log(`cleanup useEffect with [url]`);
-      clearTimeout(handler);
-    };
-  }, [url]);
-
-  React.useEffect(() => {
-    console.log(`useEffect with [debouncedUrl]`);
     setCount((prevCount) => prevCount + 1);
   }, [debouncedUrl]);
-
-  console.log(
-    `render
-    ${text} = text | ${monochrome} = monochrome | ${count} = count
-    ${url} = url
-    ${debouncedUrl} = debouncedUrl`
-  );
 
   return (
     <>

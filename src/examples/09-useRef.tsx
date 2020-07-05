@@ -4,6 +4,12 @@ import useStyles from './util/useStyles';
 import { getUrl } from './util/getUrl';
 import { useDebounce } from './util/useDebounce';
 
+/**
+ * Example 09 - useRef
+ *
+ * A demo of how autoFocus can be implemented with useRef and useEffect, so the
+ * TextField component will automatically be focused when the component mounts.
+ */
 const Example: React.FC = () => {
   const classes = useStyles();
 
