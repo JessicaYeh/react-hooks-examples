@@ -2,7 +2,6 @@ import React from 'react';
 import { TextField, Switch, FormControlLabel, Badge } from '@material-ui/core';
 import PetsIcon from '@material-ui/icons/Pets';
 import useStyles from './util/useStyles';
-import { getUrl } from './util/getUrl';
 
 function useDebounce<T>(value: T, delay: number = 500) {
   const [debouncedValue, setDebouncedValue] = React.useState(value);
@@ -25,7 +24,7 @@ function useDebounce<T>(value: T, delay: number = 500) {
 }
 
 /**
- * Example 07 - useDebounce custom hook
+ * Example 06 - useDebounce custom hook
  *
  * We extract the debounce logic into a custom hook that can be
  * used with any state value.
@@ -38,7 +37,9 @@ const Example: React.FC = () => {
   const [monochrome, setMonochrome] = React.useState(false);
   const [count, setCount] = React.useState(0);
 
-  const url = getUrl({ text, monochrome });
+  const url = `https://cataas.com/cat${text ? `/says/${text}` : ''}?width=600&height=400${
+    monochrome ? '&filter=mono' : ''
+  }`;
 
   const debouncedUrl = useDebounce(url);
 
@@ -49,20 +50,10 @@ const Example: React.FC = () => {
   return (
     <>
       <div className={classes.form}>
-        <TextField
-          label="Text"
-          variant="outlined"
-          value={text}
-          onChange={(event) => setText(event.target.value)}
-        />
+        <TextField label="Text" variant="outlined" value={text} onChange={(event) => setText(event.target.value)} />
         <FormControlLabel
           label="Monochrome"
-          control={
-            <Switch
-              checked={monochrome}
-              onChange={(event) => setMonochrome(event.target.checked)}
-            />
-          }
+          control={<Switch checked={monochrome} onChange={(event) => setMonochrome(event.target.checked)} />}
         />
         <Badge badgeContent={count} max={999} color="primary">
           <PetsIcon />

@@ -24,9 +24,9 @@ const Example: React.FC = () => {
   const [monochrome, setMonochrome] = React.useState(false);
   const [count, setCount] = React.useState(0);
 
-  const url = `https://cataas.com/cat${
-    text ? `/says/${text}` : ''
-  }?width=600&height=400${monochrome ? '&filter=mono' : ''}`;
+  const url = `https://cataas.com/cat${text ? `/says/${text}` : ''}?width=600&height=400${
+    monochrome ? '&filter=mono' : ''
+  }`;
 
   /**
    * Bad; `setCount` will change `count` and since `count` is a useEffect dependency, when
@@ -55,20 +55,10 @@ const Example: React.FC = () => {
   return (
     <>
       <div className={classes.form}>
-        <TextField
-          label="Text"
-          variant="outlined"
-          value={text}
-          onChange={(event) => setText(event.target.value)}
-        />
+        <TextField label="Text" variant="outlined" value={text} onChange={(event) => setText(event.target.value)} />
         <FormControlLabel
           label="Monochrome"
-          control={
-            <Switch
-              checked={monochrome}
-              onChange={(event) => setMonochrome(event.target.checked)}
-            />
-          }
+          control={<Switch checked={monochrome} onChange={(event) => setMonochrome(event.target.checked)} />}
         />
         <Badge badgeContent={count} max={999} color="primary">
           <PetsIcon />

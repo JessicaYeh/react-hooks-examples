@@ -2,17 +2,14 @@ import React from 'react';
 import { TextField, Switch, FormControlLabel, Badge } from '@material-ui/core';
 import PetsIcon from '@material-ui/icons/Pets';
 import useStyles from './util/useStyles';
-import { getUrl } from './util/getUrl';
 
 /**
- * Example 05 - debounce the url changes with useEffect
+ * Example 05 - hooks lifecycle
  *
- * We want to reduce the number of calls to the cat image service, by
- * only updating the image after the user stops typing for 500ms, instead of
- * immediately after each letter. The `url` will be debounced with a setTimeout
- * inside of a useEffect, and the useEffect will have a cleanup function that
- * cancels the timeout if the `url` was updated again within the 500ms. The
- * debounced value will be stored in `debouncedUrl`.
+ * Using the previous example, console.log statements are added to illustrate
+ * the lifecycle ordering of hooks.
+ *
+ * render -> React updates DOM and refs -> useEffect cleanup -> useEffect
  */
 
 const Example: React.FC = () => {
@@ -22,13 +19,17 @@ const Example: React.FC = () => {
   const [monochrome, setMonochrome] = React.useState(false);
   const [count, setCount] = React.useState(0);
 
-  const url = getUrl({ text, monochrome });
+  const url = `https://cataas.com/cat${text ? `/says/${text}` : ''}?width=600&height=400${
+    monochrome ? '&filter=mono' : ''
+  }`;
 
-  const debounceDelay = 500;
+  const debounceDelay = 5000;
   const [debouncedUrl, setDebouncedUrl] = React.useState(url);
 
   React.useEffect(() => {
+    console.log(`useEffect with [url]`);
     const handler = setTimeout(() => {
+      console.log(`setDebouncedUrl ${url}`);
       setDebouncedUrl(url);
     }, debounceDelay);
 
@@ -37,31 +38,30 @@ const Example: React.FC = () => {
      * Stop debounced value from changing if value changed within delay.
      */
     return () => {
+      console.log(`cleanup useEffect with [url]`);
       clearTimeout(handler);
     };
   }, [url]);
 
   React.useEffect(() => {
+    console.log(`useEffect with [debouncedUrl]`);
     setCount((prevCount) => prevCount + 1);
   }, [debouncedUrl]);
+
+  console.log(
+    `render
+    ${text} = text | ${monochrome} = monochrome | ${count} = count
+    ${url} = url
+    ${debouncedUrl} = debouncedUrl`
+  );
 
   return (
     <>
       <div className={classes.form}>
-        <TextField
-          label="Text"
-          variant="outlined"
-          value={text}
-          onChange={(event) => setText(event.target.value)}
-        />
+        <TextField label="Text" variant="outlined" value={text} onChange={(event) => setText(event.target.value)} />
         <FormControlLabel
           label="Monochrome"
-          control={
-            <Switch
-              checked={monochrome}
-              onChange={(event) => setMonochrome(event.target.checked)}
-            />
-          }
+          control={<Switch checked={monochrome} onChange={(event) => setMonochrome(event.target.checked)} />}
         />
         <Badge badgeContent={count} max={999} color="primary">
           <PetsIcon />

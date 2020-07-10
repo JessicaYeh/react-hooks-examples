@@ -1,7 +1,6 @@
 import React from 'react';
 import { Switch, FormControlLabel } from '@material-ui/core';
 import useStyles from './util/useStyles';
-import { getUrl } from './util/getUrl';
 import { useDebounce } from './util/useDebounce';
 
 interface CatTextField {
@@ -46,7 +45,9 @@ const Example: React.FC = () => {
   const [text, setText] = React.useState('');
   const [monochrome, setMonochrome] = React.useState(false);
 
-  const url = getUrl({ text, monochrome });
+  const url = `https://cataas.com/cat${
+    text ? `/says/${text}` : ''
+  }?width=600&height=400${monochrome ? '&filter=mono' : ''}`;
 
   const debouncedUrl = useDebounce(url);
 

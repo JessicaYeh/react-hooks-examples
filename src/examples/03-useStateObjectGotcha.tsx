@@ -25,9 +25,9 @@ const Example: React.FC = () => {
   });
   const { text, monochrome } = state;
 
-  const url = `https://cataas.com/cat${
-    text ? `/says/${text}` : ''
-  }?width=600&height=400${monochrome ? '&filter=mono' : ''}`;
+  const url = `https://cataas.com/cat${text ? `/says/${text}` : ''}?width=600&height=400${
+    monochrome ? '&filter=mono' : ''
+  }`;
 
   const [count, setCount] = React.useState(0);
   React.useEffect(() => {

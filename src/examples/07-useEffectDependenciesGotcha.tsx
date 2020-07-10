@@ -2,7 +2,6 @@ import React from 'react';
 import { TextField, Switch, FormControlLabel, Badge } from '@material-ui/core';
 import PetsIcon from '@material-ui/icons/Pets';
 import useStyles from './util/useStyles';
-import { getUrl } from './util/getUrl';
 import { useDebounce } from './util/useDebounce';
 
 interface Props {
@@ -10,7 +9,7 @@ interface Props {
 }
 
 /**
- * Example 08 - gotchas of useEffect dependencies
+ * Example 07 - gotchas of useEffect dependencies
  *
  * An `onUrlChange(url)` callback function is added to the props.
  * We want this function to be called whenever the debouncedUrl changes.
@@ -35,7 +34,9 @@ const Example: React.FC<Props> = ({ onUrlChange }) => {
   const [monochrome, setMonochrome] = React.useState(false);
   const [count, setCount] = React.useState(0);
 
-  const url = getUrl({ text, monochrome });
+  const url = `https://cataas.com/cat${text ? `/says/${text}` : ''}?width=600&height=400${
+    monochrome ? '&filter=mono' : ''
+  }`;
 
   const debouncedUrl = useDebounce(url);
 
@@ -60,20 +61,10 @@ const Example: React.FC<Props> = ({ onUrlChange }) => {
   return (
     <>
       <div className={classes.form}>
-        <TextField
-          label="Text"
-          variant="outlined"
-          value={text}
-          onChange={(event) => setText(event.target.value)}
-        />
+        <TextField label="Text" variant="outlined" value={text} onChange={(event) => setText(event.target.value)} />
         <FormControlLabel
           label="Monochrome"
-          control={
-            <Switch
-              checked={monochrome}
-              onChange={(event) => setMonochrome(event.target.checked)}
-            />
-          }
+          control={<Switch checked={monochrome} onChange={(event) => setMonochrome(event.target.checked)} />}
         />
         <Badge badgeContent={count} max={999} color="primary">
           <PetsIcon />
