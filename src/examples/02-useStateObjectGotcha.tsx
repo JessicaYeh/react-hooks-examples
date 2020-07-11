@@ -1,6 +1,5 @@
 import React from 'react';
-import { TextField, Switch, FormControlLabel, Badge } from '@material-ui/core';
-import PetsIcon from '@material-ui/icons/Pets';
+import { TextField, Switch, FormControlLabel } from '@material-ui/core';
 import useStyles from './util/useStyles';
 
 interface State {
@@ -9,7 +8,7 @@ interface State {
 }
 
 /**
- * Example 03 - gotchas of useState with object value
+ * Example 02 - gotchas of useState with object value
  *
  * The `text` and `monochrome` are combined into a single object in the state,
  * to illustrate some things that can go wrong. If you need to manage state objects,
@@ -28,11 +27,6 @@ const Example: React.FC = () => {
   const url = `https://cataas.com/cat${text ? `/says/${text}` : ''}?width=600&height=400${
     monochrome ? '&filter=mono' : ''
   }`;
-
-  const [count, setCount] = React.useState(0);
-  React.useEffect(() => {
-    setCount((prevCount) => prevCount + 1);
-  }, [url]);
 
   return (
     <>
@@ -71,9 +65,6 @@ const Example: React.FC = () => {
             />
           }
         />
-        <Badge badgeContent={count} max={999} color="primary">
-          <PetsIcon />
-        </Badge>
       </div>
       <img src={url} alt="Cat" />
     </>

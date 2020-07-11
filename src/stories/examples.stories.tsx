@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Example01 from '../examples/01-useState';
-import Example02 from '../examples/02-useStateAndUseEffect';
-import Example03 from '../examples/03-useStateObjectGotcha';
+import Example02 from '../examples/02-useStateObjectGotcha';
+import Example03 from '../examples/03-useStateAndUseEffect';
 import Example04 from '../examples/04-useEffectDebounce';
 import Example05 from '../examples/05-hooksLifecycle';
 import Example06 from '../examples/06-useDebounceCustomHook';
@@ -19,9 +19,9 @@ export default {
 
 export const Ex01UseState = () => <Example01 />;
 
-export const Ex02UseStateAndUseEffect = () => <Example02 />;
+export const Ex02UseStateObjectGotcha = () => <Example02 />;
 
-export const Ex03UseStateObjectGotcha = () => <Example03 />;
+export const Ex03UseStateAndUseEffect = () => <Example03 />;
 
 export const Ex04UseEffectDebounce = () => <Example04 />;
 

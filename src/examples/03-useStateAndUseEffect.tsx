@@ -4,7 +4,7 @@ import PetsIcon from '@material-ui/icons/Pets';
 import useStyles from './util/useStyles';
 
 /**
- * Example 02 - useState and useEffect
+ * Example 03 - useState and useEffect
  *
  * Building off of the previous example, we add a Badge with a counter to indicate
  * how many times the `url` value updates (to count how many times we hit the cat image API).
