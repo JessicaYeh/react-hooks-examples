@@ -15,9 +15,9 @@ const Example: React.FC = () => {
   const [text, setText] = React.useState('');
   const [monochrome, setMonochrome] = React.useState(false);
 
-  const url = `https://cataas.com/cat${
-    text ? `/says/${text}` : ''
-  }?width=600&height=400${monochrome ? '&filter=mono' : ''}`;
+  const url = `https://cataas.com/cat${text ? `/says/${text}` : ''}?width=600&height=400${
+    monochrome ? '&filter=mono' : ''
+  }`;
 
   const debouncedUrl = useDebounce(url);
 
@@ -52,12 +52,7 @@ const Example: React.FC = () => {
         />
         <FormControlLabel
           label="Monochrome"
-          control={
-            <Switch
-              checked={monochrome}
-              onChange={(event) => setMonochrome(event.target.checked)}
-            />
-          }
+          control={<Switch checked={monochrome} onChange={(event) => setMonochrome(event.target.checked)} />}
         />
       </div>
       <img src={debouncedUrl} alt="Cat" />

@@ -4,22 +4,15 @@ import useStyles from './util/useStyles';
 import { useDebounce } from './util/useDebounce';
 
 interface CatTextField {
-  meow: () => string;
+  meow: () => void;
 }
 
-const CatTextField = React.forwardRef<
-  CatTextField,
-  React.InputHTMLAttributes<HTMLInputElement>
->((props, ref) => {
+const CatTextField = React.forwardRef<CatTextField, React.InputHTMLAttributes<HTMLInputElement>>((props, ref) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   React.useImperativeHandle(ref, () => ({
     meow: () => {
-      const value = inputRef.current?.value;
-      if (!value) {
-        return '';
-      }
-      return `MEOW! ${value}`;
+      inputRef.current?.focus();
     },
   }));
 
@@ -34,9 +27,8 @@ const CatTextField = React.forwardRef<
 /**
  * Example 11 - useImperativeHandle
  *
- * We want a custom ref function meow() on the CatTextField that returns the
- * current value on the input element with a "MEOW!" prepended. This can be
- * achieved with useImperativeHandle in the CatTextField component.
+ * We want a custom ref function meow() on the CatTextField that does a focus() on
+ * the input. This can be achieved with useImperativeHandle in the CatTextField component.
  */
 
 const Example: React.FC = () => {
@@ -45,29 +37,25 @@ const Example: React.FC = () => {
   const [text, setText] = React.useState('');
   const [monochrome, setMonochrome] = React.useState(false);
 
-  const url = `https://cataas.com/cat${
-    text ? `/says/${text}` : ''
-  }?width=600&height=400${monochrome ? '&filter=mono' : ''}`;
+  const url = `https://cataas.com/cat${text ? `/says/${text}` : ''}?width=600&height=400${
+    monochrome ? '&filter=mono' : ''
+  }`;
 
   const debouncedUrl = useDebounce(url);
 
   const inputRef = React.useRef<CatTextField>(null);
 
+  React.useEffect(() => {
+    inputRef.current?.meow();
+  }, []);
+
   return (
     <>
       <div className={classes.form}>
-        <CatTextField
-          ref={inputRef}
-          onKeyUp={() => setText(inputRef.current?.meow() ?? '')}
-        />
+        <CatTextField ref={inputRef} value={text} onChange={(event) => setText(event.target.value)} />
         <FormControlLabel
           label="Monochrome"
-          control={
-            <Switch
-              checked={monochrome}
-              onChange={(event) => setMonochrome(event.target.checked)}
-            />
-          }
+          control={<Switch checked={monochrome} onChange={(event) => setMonochrome(event.target.checked)} />}
         />
       </div>
       <img src={debouncedUrl} alt="Cat" />
