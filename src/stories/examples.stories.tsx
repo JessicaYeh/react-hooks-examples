@@ -32,15 +32,18 @@ export const Ex06UseDebounceCustomHook = () => <Example06 />;
 export const Ex07UseEffectsDependenciesGotcha = () => {
   const [url, setUrl] = React.useState<string>();
 
-  const handleUrlChange = (url: string) => {
-    console.log(url);
-    setUrl(url);
-  };
-
-  // const handleUrlChange = React.useCallback((url: string) => {
+  /**
+   * Functions defined inside React function components are recreated every render
+   */
+  // const handleUrlChange = (url: string) => {
   //   console.log(url);
   //   setUrl(url);
-  // }, []);
+  // };
+
+  const handleUrlChange = React.useCallback((url: string) => {
+    console.log(url);
+    setUrl(url);
+  }, []);
 
   return (
     <>

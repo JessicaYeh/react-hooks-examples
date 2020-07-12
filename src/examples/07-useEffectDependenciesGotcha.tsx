@@ -19,13 +19,10 @@ interface Props {
  * but notice it causes a problem where the counter is incremented twice for
  * each url change.
  *
- * There are multiple ways to fix the problem, some cleaner than others. In
- * increasing order of cleaniness:
- *
+ * Possible solutions:
  * 1. Remove onUrlChange from the dependency array and then ignore the eslint warning
  * 2. In the parent where onUrlChange function defined, wrap it in useCallback so it doesn't
  *      change on every re-render of the parent
- * 3. Refactor the useEffect into two separate useEffect
  */
 const Example: React.FC<Props> = ({ onUrlChange }) => {
   const classes = useStyles();
@@ -40,21 +37,8 @@ const Example: React.FC<Props> = ({ onUrlChange }) => {
 
   const debouncedUrl = useDebounce(url);
 
-  /**
-   * Bad; If these are grouped together, if the onUrlChange function changes
-   * (could happen on every re-render of the parent if it's not memoized in the parent)
-   * then setCount will be called more times than expected
-   */
-  // React.useEffect(() => {
-  //   setCount((prevCount) => prevCount + 1);
-  //   onUrlChange?.(debouncedUrl);
-  // }, [debouncedUrl, onUrlChange]);
-
   React.useEffect(() => {
     setCount((prevCount) => prevCount + 1);
-  }, [debouncedUrl]);
-
-  React.useEffect(() => {
     onUrlChange?.(debouncedUrl);
   }, [debouncedUrl, onUrlChange]);
 
